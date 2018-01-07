@@ -29,7 +29,14 @@ public class BookStoreImpl implements BookStore {
 		if(availableCount <= 0) {
 			throw new IllegalArgumentException("availableCount must be > 0");
 		}
+		if(bookAlreadyExists(book)) {
+			throw new RuntimeException("Book already exists with same isbn title and author" + book.getTitle());
+		}
 		booksInfoMap.put(book, new BookInventory(book, availableCount));
+	}
+
+	private boolean bookAlreadyExists(Book book) {
+		return booksInfoMap.keySet().stream().filter(b -> b.equals(book)).findFirst().isPresent();
 	}
 
 	@Override
